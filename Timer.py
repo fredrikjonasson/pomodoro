@@ -37,5 +37,5 @@ def breakTime(break_sec, break_min):
         time.sleep(1)
         print(formatTime(x))
     print "NU ARBETAR DU IGEN1!"
-main()
 
+main()
