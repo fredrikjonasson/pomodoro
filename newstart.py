@@ -1,5 +1,9 @@
 from Tkinter import *
 import time
+#Code for profiling
+import cProfile, pstats, StringIO
+pr = cProfile.Profile()
+pr.enable()
 
 #Main
 root = Tk()
@@ -72,6 +76,14 @@ class Pomodoro(Frame):
         onoff= False
         self.timer_update()
         
-       
+
 app = Pomodoro(root)
 root.mainloop()
+
+# Profiling
+pr.disable()
+s = StringIO.StringIO()
+sortby = 'cumulative'
+ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+ps.print_stats()
+print s.getvalue()
