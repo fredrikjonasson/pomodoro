@@ -7,10 +7,12 @@ pr.enable()
 
 #Main
 root = Tk()
+root.configure(bg="pink")
 root.title("Pomodoro")
-root.geometry("300x200")
+root.geometry("250x100")
 tid = 0
 onoff = True
+vilotid = 300
 
 class Pomodoro(Frame):
     """Create all objects"""
@@ -20,32 +22,32 @@ class Pomodoro(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.inst_lbl = Label(self, text = "Enter time: ")
-        self.inst_lbl.grid(row = 0, column = 0, columnspan =2, sticky = W)
+        self.inst_lbl = Label(self, text = "Enter time:", bg="pink")
+        self.inst_lbl.grid(row = 0, column = 0, sticky = NW)
 
         #Create entry
         self.tm_ent = Entry(self)
-        self.tm_ent.grid(row = 1, column = 1, sticky = W)
+        self.tm_ent.grid(row = 0, column = 1, sticky = W)
 
         #Create Enter-button
-        self.submit_btn = Button(self, text = "Submit", command = self.timer_set)
-        self.submit_btn.grid(row = 1, column = 0, sticky = W)
+        self.submit_btn = Button(self, text = "Submit", command = self.timer_set, bg="pink")
+        self.submit_btn.grid(row = 1, column = 0)
 
         #Create Start-button
-        self.start_btn = Button(self, text = "Start", command = self.timer_on)
-        self.start_btn.grid(row = 2, column = 0, sticky = W)
+        self.start_btn = Button(self, text = "Start", command = self.timer_on, bg="pink")
+        self.start_btn.grid(row = 1, column = 1, sticky = W)
 
         #Create Stop-button
-        self.stop_btn = Button(self, text = "Stop", command = self.timer_off)
-        self.stop_btn.grid(row = 2, column = 1, sticky = W)
+        self.stop_btn = Button(self, text = "Stop", command = self.timer_off, bg="pink")
+        self.stop_btn.grid(row = 1, column = 1)
 
         #Create Reset-button
-        self.stop_btn = Button(self, text = "Reset", command = self.timer_set)
-        self.stop_btn.grid(row = 2, column = 2, sticky = W)
+        self.stop_btn = Button(self, text = "Reset", command = self.timer_reset, bg="pink")
+        self.stop_btn.grid(row = 1, column = 1, sticky = E)
 
         #Create text widget to display timer
-        self.timer_txt = Text(self, width = 35, height = 30, wrap = WORD)
-        self.timer_txt.grid(row = 3, column = 0, columnspan = 2, sticky = W)
+        self.timer_txt = Text(self, width = 20, height = 2, wrap = WORD)
+        self.timer_txt.grid(row = 3, column = 0, columnspan = 3, sticky = W+E+N+S)
 
     def timer_set(self):
         global tid
@@ -53,18 +55,32 @@ class Pomodoro(Frame):
         self.timer_dsp()
         
     def timer_dsp(self):
-        timeContMin = int(tid) / 60
-        timeContSec = int(tid) % 60
-        self.timer_txt.delete(0.0, END)
-        self.timer_txt.insert(0.0, "Minutes: " + str(timeContMin) + " Seconds: " + str(timeContSec))
-        
+        if tid>=1:
+            timeContMin = int(tid) / 60
+            timeContSec = int(tid) % 60
+            self.timer_txt.delete(0.0, END)
+            self.timer_txt.insert(0.0, "            Arbete")
+            self.timer_txt.insert(0.0, "Minutes: " + str(timeContMin) + " Seconds: " + str(timeContSec))
+            root.update()
+        else:
+            vilotimeContMin = int(vilotid) / 60
+            vilotimeContSec = int(vilotid) % 60
+            self.timer_txt.delete(0.0, END)
+            self.timer_txt.insert(0.0, "       Vilodags")
+            self.timer_txt.insert(0.0, "Minutes: " + str(vilotimeContMin) + " Seconds: " + str(vilotimeContSec))
+            root.update()
+            
     def timer_update(self):
         global tid
-        while onoff:
+        global vilotid
+        while onoff and tid >= 1:
             tid = int(tid) - 1
             time.sleep(1)
             self.timer_dsp()
-            root.update()
+        while onoff and tid <= 1:
+            vilotid = int(vilotid) - 1
+            time.sleep(1)
+            self.timer_dsp()
             
     def timer_on(self):
         global onoff
@@ -75,6 +91,11 @@ class Pomodoro(Frame):
         global onoff
         onoff= False
         self.timer_update()
+
+    def timer_reset(self):
+        global tid
+        tid = 0
+        self.timer_dsp()
         
 
 app = Pomodoro(root)
