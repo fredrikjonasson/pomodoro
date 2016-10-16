@@ -53,7 +53,7 @@ class Pomodoro(Frame):
         global tid
         tid = self.tm_ent.get()
         self.timer_dsp()
-        
+
     def timer_dsp(self):
         if tid>=1:
             timeContMin = int(tid) / 60
@@ -69,7 +69,7 @@ class Pomodoro(Frame):
             self.timer_txt.insert(0.0, "       Vilodags")
             self.timer_txt.insert(0.0, "Minutes: " + str(vilotimeContMin) + " Seconds: " + str(vilotimeContSec))
             root.update()
-            
+
     def timer_update(self):
         global tid
         global vilotid
@@ -81,7 +81,7 @@ class Pomodoro(Frame):
             vilotid = int(vilotid) - 1
             time.sleep(1)
             self.timer_dsp()
-            
+
     def timer_on(self):
         global onoff
         onoff = True
@@ -96,7 +96,7 @@ class Pomodoro(Frame):
         global tid
         tid = 0
         self.timer_dsp()
-        
+
 
 app = Pomodoro(root)
 root.mainloop()
